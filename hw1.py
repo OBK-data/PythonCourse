@@ -1,4 +1,4 @@
-import random  #found it from internet
+import random  #found it on the Internet
 stockrandom = random.uniform(0.5, 1.5)#made them easier to apply
 fundrandom = random.uniform(0.9, 1.2)
 class Stock():
@@ -9,17 +9,17 @@ class MutualFund():
 	def __init__(self, fundname):
 		self.fundname = fundname
 
-class Portfolio():
+class Portfolio(Stock):
 	def __init__(self):
 		self.account = dict({'MONEY': float(0), 'STOCK': {}, 'M. FUNDS': {}}) #dictionary for all of the assets (school exercise)
 		self.histora = [] #list for transaction history
 	def __repr__(self):
 		return "You have %f dollars, %s stocks and %s bonds in your account. " % (self.account['MONEY'], self.account['STOCK'], self.account['M. FUNDS'])
 
-	def addCash(self, input):
+	def addCash(self, input): #adds cash
 		self.account ['MONEY'] += input
 		self.histora.append (("%f $ has been added.") % (input))
-	def withdrawCash(self,input):
+	def withdrawCash(self,input): #withdraws cash
 		if self.account ['MONEY'] < input:
 		   print("Insufficient Funds")
 		else:
@@ -28,41 +28,48 @@ class Portfolio():
 
 	def buyStock(self, number, Stock):
 		self.number = number
-		if self.account ['MONEY'] < number*Stock.price:
+		global pricee #made price variable easier to use
+		pricee = Stock.price
+		if self.account ['MONEY'] < number*pricee: #prevents overbuying
 			print("Insufficient Funds")
+		elif Stock.assetname in self.account['STOCK']: #checks whether the stock exists in the account
+			self.account['STOCK'][Stock.assetname] += number
+			self.histora.append (("You have bought additional %i %s stocks!") % (self.number, Stock.assetname))
+
 		else:
-			self.account['STOCK'][Stock.assetname] = int(number)
-			self.withdrawCash(number * Stock.price)
+			self.account['STOCK'][Stock.assetname] = number #adds stock
+			self.withdrawCash(number * pricee)
 			self.histora.append (("You have bought %i %s stocks!") % (self.number, Stock.assetname))
-	def sellStock(self,Stock ,number ):
-		self.addCash(self.number * Stock.price * stockrandom )
-		self.histora.append (("You have sold %i %s stocks.") % (self.number, Stock.assetname))
-		if self.account['STOCK'][Stock.assetname]== number:
-			del self.account['STOCK'][Stock.assetname]
+	def sellStock(self,assetname ,number ):
+		self.addCash(self.number * pricee * stockrandom )
+		self.histora.append (("You have sold %i %s stocks.") % (self.number, assetname))
+		if self.account['STOCK'][assetname]== number: #removes stock if it's number hits zero.
+			del self.account['STOCK'][assetname]
 		else:
-			self.account['STOCK'][Stock.assetname] -= number
+			self.account['STOCK'][assetname] -= number #sells stock
 
 	def buyMutualFund(self, share, MutualFund):
 		self.share = share
 		if share > self.account ['MONEY']:
 			print("Insufficient funds")
+		elif MutualFund.fundname in self.account['M. FUNDS']: #checks whether the fund already exists in the account
+			self.account['M. FUNDS'][MutualFund.fundname] += float(share)
+			self.histora.append (("You have bought additional %f percent of %s fund") % (self.share,MutualFund.fundname))
 		else:
-			self.account['M. FUNDS'][MutualFund.fundname] = share
+			self.account['M. FUNDS'][MutualFund.fundname] = float(share) #buys funds
 			self.withdrawCash(share)
 			self.histora.append (("You have bought %f percent of %s fund") % (self.share,MutualFund.fundname))
-	def sellMutualFund(self, MutualFund, share):
+	def sellMutualFund(self, fundname, share):
 		self.addCash(share * fundrandom)
-		self.histora.append (("You have sold %f percent of %s fund") % (self.share, MutualFund.fundname))
-		if share == self.account['M. FUNDS'][MutualFund.fundname]:
-			del self.account['M. FUNDS'][MutualFund.fundname]
+		self.histora.append (("You have sold %f percent of %s fund") % (self.share, fundname))
+		if share == self.account['M. FUNDS'][fundname]: #deletes the funds when shares hit zero
+			del self.account['M. FUNDS'][fundname]
 		else:
-		    self.account['M. FUNDS'][MutualFund.fundname] -=  share
+		    self.account['M. FUNDS'][fundname] -=  share #removes some of the shares
 
-	def history(self):
+	def history(self): #provides transaction history
 		print("Your transaction history:")
 		print(*self.histora, sep = "\n")
-
-#Unfortunately, I couldn't make sales work. I couln't find a way to replace mf3 and s with BRT and HFH.
 
 portfolio = Portfolio() #Creates a new portfolio
 portfolio.addCash(300.50) #Adds cash to the portfolio
