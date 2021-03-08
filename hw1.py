@@ -56,7 +56,7 @@ class Portfolio():
 		if share == self.account['M. FUNDS'][MutualFund.share]:
 			del self.account['M. FUNDS'][MutualFund.share]
 		else:
-		    self.account[MutualFund.fundname] -=  share
+		    self.account['M. FUNDS'][MutualFund.fundname] -=  share
 
 	def history(self):
 		print("Your transaction history:")
