@@ -53,8 +53,8 @@ class Portfolio():
 	def sellMutualFund(self, MutualFund, share):
 		self.addCash(share * fundrandom)
 		self.histora.append (("You have sold %f percent of %s fund") % (self.share, MutualFund.fundname))
-		if share == self.account['M. FUNDS'][MutualFund.share]:
-			del self.account['M. FUNDS'][MutualFund.share]
+		if share == self.account['M. FUNDS'][MutualFund.fundname]:
+			del self.account['M. FUNDS'][MutualFund.fundname]
 		else:
 		    self.account['M. FUNDS'][MutualFund.fundname] -=  share
 
