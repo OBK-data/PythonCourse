@@ -13,7 +13,7 @@ from imblearn.over_sampling import RandomOverSampler
 from sklearn import preprocessing
 
 #[Preparing data for ML]
-dat = pd.read_csv('C:/Users/Bulut/Desktop/R Course/aa/Homework 2/Homework 3/cses4_cut.csv')
+dat = pd.read_csv('cses4_cut.csv')
 #there are many NaN values that are not assigned. So I assigned them.
 col1=["D2011","D2016","D2027","D2029","D2030"]
 col2 = ["D2002","D2004","D2005","D2006","D2007","D2008","D2009","D2012","D2013","D2014","D2017","D2018","D2019","D2020","D2024","D2025","D2031"]
